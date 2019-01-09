@@ -29,16 +29,16 @@ c = M\v;
 
 z = c(1)*t+c(2);
 
+% ~~~~~ Changes made by me ~~~~~
 Sum=0;
 
 for j = 1:N
-    disp(t(j))
-    temp = t(j);
     Sum = Sum + (y(j) - z(j))^2;
 end 
 
 Err = 1/N * Sum;
 disp(Err);
+% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 disp('grading variables list:  z, Err')
 
