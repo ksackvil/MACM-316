@@ -18,29 +18,28 @@ clear
 load hw00Bpractice.mat
 whos
 
-A = [t ones(size(t))]; 
+A = [t.^2 t ones(size(t))];  
 
-%  redo these lines
-M = transpose(A) * A;
-v = transpose(A) * y;
+M = (A.')*A;
+v = (A.')*y;
 
 %  linear solve
 c = M\v;
 
-z = c(1)*t+c(2);
-
-% ~~~~~ Changes made by me ~~~~~
-Sum=0;
-
-for j = 1:N
-    Sum = Sum + (y(j) - z(j))^2;
-end 
-
-Err = 1/N * Sum;
-disp(Err);
-% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+% z = c(1)*t+c(2);
+z = c(1)*t.^2 + c(2)*t + c(3);
 
 disp('grading variables list:  z, Err')
+
+% Solve for squared error
+s = 0;
+
+for j = 1:N
+    zTemp = c(1)*t(j)+c(2);
+    s = s + (y(j) + zTemp)^2;
+end 
+
+Err = (1/N) * s;
 
 %  pre-written Plotting section
 figure(1)

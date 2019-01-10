@@ -17,6 +17,7 @@ r = @(t) t.^3.*exp(2.*t);
 s=0;
 
 for k = 0:15
+    disp(k)
 %     s = s + 1/factorial(k)*(t).^(k+2);
     s = s + (t.^3).*(1/factorial(k) * (2).^(k) * (t).^(k));
 end 
