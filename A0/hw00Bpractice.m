@@ -16,30 +16,35 @@ clear
 
 %  load the practice data & list variables
 load hw00Bpractice.mat
+% whos
+
+% ~~~~~~~~~~ SUBMIT PART ~~~~~~~~~~ %
+
 whos
+A = [t.^2 t ones(size(t))]; 
 
-A = [t.^2 t ones(size(t))];  
-
-M = (A.')*A;
-v = (A.')*y;
+%  redo these lines
+M = transpose(A) * A;
+v = transpose(A) * y;
 
 %  linear solve
 c = M\v;
 
-% z = c(1)*t+c(2);
 z = c(1)*t.^2 + c(2)*t + c(3);
 
-disp('grading variables list:  z, Err')
-
-% Solve for squared error
+% calculating square error
 s = 0;
 
 for j = 1:N
-    zTemp = c(1)*t(j)+c(2);
-    s = s + (y(j) + zTemp)^2;
+    zTemp = c(1)*t(j).^2 + c(2)*t(j) + c(3);
+    s = s + (y(j) - zTemp)^2;
 end 
 
 Err = (1/N) * s;
+
+% ~~~~~~~~~~ END ~~~~~~~~~~ %
+
+disp('grading variables list:  z, Err')
 
 %  pre-written Plotting section
 figure(1)
