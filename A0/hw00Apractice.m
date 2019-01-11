@@ -10,26 +10,30 @@
 %       | We will also see a brief introduction to computing
 %       | errors.
 
-%change number format to scientific
-format long e;
+% ~~~~~~~~~~ SUBMIT PART ~~~~~~~~~~ %
 
-t = [-2:0.05:2];
-% r = @(t) t.^2.*exp(t); %old r
+format long e
+
+% new var
 a = 2;
-r = @(t) t.^3.*exp(a.*t);
+t = [-2:.05:2]; 
+r = @(t) t.^3.*exp(a*t);
 s=0;
 
 for k = 0:15
-    %s = s + 1/factorial(k)*(t).^(k+2);
-    s = s + ((1/factorial(k)) .* (2).^(k) .* (t).^(k));
+    s = s + 1/factorial(k) * ((a * t).^(k));
 end 
 
-s = s .* t.^3;
-
+s = (t.^3) .* s;
 Err=s-r(t);
 
+% where to = -1.05 ...
+Err0 = Err(20);
+
 %Type your new plot title here
-plot_title = 'Plot of r(t) = t^3*exp(at) and Taylor Approximation s(t)';
+plot_title = 'Plot of r(t)=t^3*exp(at) and Taylor Approximation s(t)';
+
+% ~~~~~~~~~~ END ~~~~~~~~~~ %
 
 %Plotting of results
 figure(1)
