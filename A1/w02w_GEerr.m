@@ -3,13 +3,17 @@
 %
 
 testVect = [];
-for i=0:7
-    testVect(i+1) = 2^i;
+for index=0:10
+    testVect(index+1) = 2^index;
 end
-e_res_arr = zeros(1,6);
 
+% testVect = [150: 50: 900];
+e_res_arr = [];
+finalTime = 0;
 
+tic
 for itr = 1:length(testVect)
+    tic
     disp("Test case for N = "+testVect(itr));
     
     %  N = matrix size;  Nex = # of experiments
@@ -39,12 +43,9 @@ for itr = 1:length(testVect)
         % rms solution error
         sol_err(kk) = rms(x1-x0);
         
-        e_res = e_res + log10(res_err(kk));
     end
-
-    e_res = (1/Nex) * e_res;
-    e_res_arr(itr) = e_res;
-    disp(e_res);
+    
+    e_res_arr(itr) = mean(log10(res_err));
     
 
 %     %  histogram for residual error
@@ -71,9 +72,13 @@ for itr = 1:length(testVect)
 %     xlabel('log_{10} rms error','fontsize',12)
 %     ylabel(['number from ' num2str(Nex) ' experiments'])
 %     title('solution error: x_1-x_0','fontsize',14)
+ disp(toc + " seconds elapsed");
+ disp(" ");
  
+ finalTime = finalTime + toc;
 end
 
-plot(log10(testVect), e_res_arr);
-% waitforbuttonpress;
-% plot(testVect, e_res_arr);
+disp("Total Experiment Time: " + finalTime)
+
+plot(log10(testVect), e_res_arr, '-x');
+waitforbuttonpress;
