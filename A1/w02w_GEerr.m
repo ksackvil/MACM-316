@@ -4,14 +4,15 @@
 
 clear;
 
-testVect = [];
+testVect = [16, 32, 64, 128, 256, 512];
 e_res_arr = [];
 finalTime = 0;
+NexVal = 3000;
 
 % populate testVect with some values of N
-for index=3:10
-    testVect(index+1) = 2^index;
-end
+% for index=2:7
+%     testVect(index-1) = 2^index;
+% end
 
 for itr = 1:length(testVect)
     tic
@@ -19,7 +20,7 @@ for itr = 1:length(testVect)
     
     %  N = matrix size;  Nex = # of experiments
     N = 1*testVect(itr);
-    Nex = 1*100;
+    Nex = 1*NexVal;
 
     %  solution of all ones
     x0 = ones(N,1);
@@ -63,7 +64,7 @@ y = e_res_arr;
 figure
 hold on;
 title('Typical GE Error For Matrix Size N')
-xlabel('Eres(N)') 
-ylabel('log10(N)') 
+ylabel('Eres(N)') 
+xlabel('log10(N)') 
 plot(x, y, 'b-o');
 hold off;
