@@ -1,6 +1,9 @@
+%% Computing Assignment 1: Solving for N* 
 %
-%  w02w_GEerr.m -- GE truncation error (djm -- 08 sep 2019)
+% w02w_GEerr.m -- Testing diffrent values of Nex
 %
+% By: Kai Sackville - Hii
+% Date: Jan 21, 2019
 
 clear; 
 

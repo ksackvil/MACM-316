@@ -1,6 +1,10 @@
+
+%% Computing Assignment 1: Solving for N* 
 %
-%  w02w_GEerr.m -- GE truncation error (djm -- 08 sep 2019)
+% w02w_GEerr.m -- GE truncation error
 %
+% By: Kai Sackville - Hii
+% Date: Jan 21, 2019
 
 clear;
 
@@ -8,11 +12,6 @@ testVect = [16, 32, 64, 128, 256, 512];
 e_res_arr = [];
 finalTime = 0;
 NexVal = 3000;
-
-% populate testVect with some values of N
-% for index=2:7
-%     testVect(index-1) = 2^index;
-% end
 
 for itr = 1:length(testVect)
     tic
