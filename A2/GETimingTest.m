@@ -18,17 +18,20 @@
 clear;
 
 %  experimental parameters
-N   = 1000;
-NexArr = [50,  100, 150, 200, 250, 300, 350, 400, 450, 500];
-avg_tri_time_array = zeros(1,length(NexArr));
-avg_perm_time_array = zeros(1,length(NexArr));
-avg_dense_time_array = zeros(1,length(NexArr));
+% N   = 1000;
+Nex = 50;
+
+% NArr = [10 ^3, 11^3, 12^3, 13^3, 14^3, 15^3, 16^3];
+NArr = [35^2, 36^2, 37^2, 38^2, 39^2 40^2];
+avg_tri_time_array = zeros(1,length(NArr));
+avg_perm_time_array = zeros(1,length(NArr));
+avg_dense_time_array = zeros(1,length(NArr));
 
 
-for iter = 1:length(NexArr)
+for iter = 1:length(NArr)
     
-    fprintf("\nNex = %f", NexArr(iter));
-    Nex = NexArr(iter);
+    fprintf("\nNex = %f", NArr(iter));
+    N = NArr(iter);
     %  three matrix types
 
     %  dense matrix (no zeros)
@@ -103,7 +106,7 @@ hold on
 title('Dense Matrix')
 xlabel(const_x_label)
 ylabel(const_y_label)
-plot(NexArr, avg_dense_time_array, 'g-o')
+plot(NArr, avg_dense_time_array, 'g-o')
 hold off
       
 figure
@@ -111,7 +114,7 @@ hold on
 title('Triangular Matrix')
 xlabel(const_x_label)
 ylabel(const_y_label)
-plot(NexArr, avg_tri_time_array, 'b-o')
+plot(NArr, avg_tri_time_array, 'b-o')
 hold off
 
 figure
@@ -119,5 +122,5 @@ hold on
 title('Permuted Matrix')
 xlabel(const_x_label)
 ylabel(const_y_label)
-plot(NexArr, avg_perm_time_array, 'r-o')
+plot(NArr, avg_perm_time_array, 'r-o')
 hold off
