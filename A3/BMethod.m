@@ -10,7 +10,7 @@ function xB = BMethod(ff, a, b, tol)
 %%%BEGIN:   this part does sqrt-specific bracketting
 
 %  bracketting list
-xlist = [a:1:b];
+xlist = [a:0.1:b];
 flist = ff(xlist);
 sign_check = sign(flist);
 
@@ -33,8 +33,10 @@ end
 
 %  0)  set sign-change interval
 xL = xlist(indX  );
+% xL = a;
 fL = ff(xL);
 xR = xlist(indX+1);
+% xR = b;
 fR = ff(xR);
 Nevals = 2;
 
@@ -74,7 +76,7 @@ while (abs(check)>tol)
 % 	plot(Nevals,log10(abs(check)),'kx')
 	
 	xB  = xL + check;
-    disp(xB)
+%     disp(xB)
 end
 end
 

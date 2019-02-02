@@ -8,8 +8,8 @@ function xS = SMethod(ff, a, b, tol)
 %   p = The approximated value.
 
 %  0)  set two initial guesses
-x0 = a  ;  f0 = ff(x0);
-x1 = b;
+x0 = b  ;  f0 = ff(x0);
+x1 = a;
 Nevals = 1;
 itmax = 30;
 
@@ -39,7 +39,7 @@ while (abs(check)>tol)
 	x1 = xS;
 	
 	check = x1-x0;
-	plot(Nevals,log10(abs(check)),'kx')
+% 	plot(Nevals,log10(abs(check)),'kx')
 end
 end
 

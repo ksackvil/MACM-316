@@ -4,8 +4,15 @@
 
 %  hi function
 
-PHI = 3*pi/2;
-
+% ==========
+b_phi = 3*pi/4;
+s_phi = 1;
+%  root-finding loop control parameters
+% ds = 0.6; % For Bsect and fzero.
+ds = 0.1; % for secant method 
+Nsteps = 24;
+% Nsteps = 163; % For secant method
+% ==========
 %  define domain in x and y
 xx = -2.5:0.025:2.5;  yy = -2.5:0.025:2.5;
 
@@ -13,11 +20,8 @@ xx = -2.5:0.025:2.5;  yy = -2.5:0.025:2.5;
 [xg,yg] = meshgrid(xx,yy);
 
 %  set root-finding tolerance (for initial pt & loop)
-tol = 1e-10; 
+tol = 1e-10;
 fzero_opt = optimset('TolX',tol);
-
-%  root-finding loop control parameters
-ds = 0.6;  
 
 %  useful future variables
 %  itmax = 24;  delta = pi/50;
@@ -44,20 +48,20 @@ xn = xi + ds*cos(th);
 yn = yi + ds*sin(th);
 
 %  make array of contour points
-Nsteps = 24;
 zero_contour = zeros(Nsteps+1,2);
 zero_contour(1,:) = [xn yn];
+
 
 %  loop for the contour
 for kk = 1:Nsteps
 	%  START:  theta root-finding here (you cannot use fzero here!!)
 	%
 	%  fzero for next angle, using previous angle as initial guess
-%  	thn = fzero(@(th) hi_th(th,xn,yn), th, fzero_opt);
-%     thn = BMethod(@(th) hi_th(th,xn,yn), th-PHI, th+PHI, tol);
-%         thn = SMethod(@(th) hi_th(th,xn,yn), th-PHI, th+PHI, tol);
     
-%     disp([thn, bsecttest])    
+	thn = fzero(@(th) hi_th(th,xn,yn),th,fzero_opt);
+    bmeth = BMethod(@(th) hi_th(th,xn,yn),th-b_phi, th+b_phi,tol);
+%     smeth = SMethod(@(th) hi_th(th,xn,yn),th-phi, th+phi,tol);
+    
     %
     %  END:  theta root-finding here
      
