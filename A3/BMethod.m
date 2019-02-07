@@ -1,3 +1,6 @@
+%% Computing Assignment: Root Finding 2D contour
+% BMethod function file, Kai Sackville-Hii (feb 4, 2019)
+
 function xB = BMethod(ff, a, b, tol)
 %BMethod Implementation of the bisection method.
 %Pre:
@@ -49,11 +52,13 @@ check = (xR-xL)/2;
 % 		[Nevals, xL, fL, xR, fR, check])
 
 xB  = xL + check;
+Nevals_arr = [];
 
 %  root-finding loop
 while (abs(check)>tol)
 	%  2)  function evaluation
 	fB = ff(xB);
+    Nevals_arr(Nevals) = Nevals + 1;
 	Nevals = Nevals + 1;
 	
 	%  3)  decision
@@ -78,5 +83,7 @@ while (abs(check)>tol)
 	xB  = xL + check;
 %     disp(xB)
 end
+
+% disp(max(Nevals_arr));
 end
 

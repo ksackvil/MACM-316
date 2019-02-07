@@ -1,18 +1,19 @@
-%
+%% Computing Assignment: Root Finding 2D contour
 %  CA3_demo.m -- djm -- 29 jan 2019
 %
-
 %  hi function
 
-% ==========
+
+% ========== PARAMETERS ========== %
 b_phi = 3*pi/4;
-s_phi = 1;
+s_phi = pi/2;
 %  root-finding loop control parameters
 % ds = 0.6; % For Bsect and fzero.
-ds = 0.1; % for secant method 
-Nsteps = 24;
-% Nsteps = 163; % For secant method
-% ==========
+ds = 0.035; % For secant method.
+% Nsteps = 24; % For Bsect and fzero.
+Nsteps = 415; % For secant method.
+% ================================ %
+
 %  define domain in x and y
 xx = -2.5:0.025:2.5;  yy = -2.5:0.025:2.5;
 
@@ -58,9 +59,10 @@ for kk = 1:Nsteps
 	%
 	%  fzero for next angle, using previous angle as initial guess
     
-	thn = fzero(@(th) hi_th(th,xn,yn),th,fzero_opt);
-    bmeth = BMethod(@(th) hi_th(th,xn,yn),th-b_phi, th+b_phi,tol);
-%     smeth = SMethod(@(th) hi_th(th,xn,yn),th-phi, th+phi,tol);
+% 	thn = fzero(@(th) hi_th(th,xn,yn),th,fzero_opt);
+%     thn = BMethod(@(th) hi_th(th,xn,yn),th-b_phi, th+b_phi,tol);
+    
+    thn = SMethod(@(th) hi_th(th,xn,yn),th-s_phi, th+s_phi,tol);
     
     %
     %  END:  theta root-finding here
