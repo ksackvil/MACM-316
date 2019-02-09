@@ -29,7 +29,7 @@ opt2 = optimset('TolX',tol,'Display','iter');
 mm = 0;
 
 % Compute z_{0,1} using fzero - options version 1
-ri = [2,3];    % Initial Bracket
+ri = [2.4,2.6];    % Initial Bracket
 [Amk(mm+1,1),err,exitflag,output] = fzero(@(x) bfunc(x,mm),ri,opt1);
 output
 
