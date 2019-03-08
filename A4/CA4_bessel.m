@@ -1,7 +1,7 @@
-
+%% Computing Assignment 4:Finding the Roots of Bessel Functions 
 %
 %  CA4_bessel.m -- djm -- 03 feb 2019
-%
+%  Editted by Kai Sackville-Hii (Feb 11, 2019)
 
 clear;
 
@@ -22,7 +22,8 @@ Nevals1_arr = [];
 Nevals2_arr = [];
 
 % Convergence tolerance
-tol=1e-6; 
+% tol=1e-6;
+tol=1e-6;
 
 %  define bessel function
 bfunc = @(x,mm) besselj(mm,x);
@@ -53,6 +54,7 @@ for row=1:mat_size
     mm = row-1;
     
     for col=1:mat_size
+        Nevals = 0;
         
         % get zero
         [Amk_1(row,col), err, exitflag,output] = fzero(@(x) bfunc(x,mm),ri, opt3);
@@ -88,7 +90,7 @@ disp(" ===== Part 2: Newtons Method ===== ")
 nm = @(x,m) x - besselj(m,x)/(0.5*(besselj(m-1,x)-besselj(m+1,x)));
 
 %Initial guess for z_{1,1}
-zi = 2.5;
+zi = 1;
 mm = 0;
 Nevals=0;
 
@@ -127,7 +129,12 @@ end
 % Output 2x2 matrix and Nevals for checking
 %
 A22 = Amk_1(1:2,1:2);
-Zmk = Amk_1;
+Zmk = Amk_2;
+
+disp("avg Nevals of fzero")
+disp(mean(Nevals1_arr))
+disp("avg Nevals of Netowns")
+disp(mean(Nevals2_arr))
 
 %  plot bessel function (useful for testing?)
 figure(1000);  clf
