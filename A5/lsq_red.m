@@ -15,9 +15,46 @@ titles = ["fixed acidity";"volatile acidity";"citric acid";"residual sugar";  ..
 
 % ==================== PART 1 START ==================== %
 % ~~~~~ TRAINING MODAL ON WHITES.CSV DATA ~~~~~ %
+% Both methods used find the 'correct' parameter to be 2, 4, and 8
+% First method tests all possible cases exculding any duplicates, second
+% method test random versions of the three ji's. both find the combination 
+% with the least RMS.
+
 % RMS_arr = [];
+% count = 1;
+
+% METHOD 1 using grid search (ie all possible values)
+% tic
+% for j1=1:10
+%     
+%     for j2 = 1:10
+%         
+%         if(j2 == j1)
+%             continue
+%         end
+%         
+%         for j3 = 1:10
+%             
+%             if(j3 == j1 || j3 == j2)
+%                 continue
+%             else
+%                 A = [ones(size(white_training(:,1))) white_training(:,j1), white_training(:,j2), white_training(:,j3)];
+%                 % known quality ratings
+%                 y = white_training(:,11); 
 % 
-% % Some RMS's to compare our value too. using randomized search
+%                 % solve for lsq coefficents using "\"       
+%                 c = A \ y; 
+% 
+%                 disp([count, j1, j2, j3])
+%                 % compute RMS error 
+%                 RMS_arr(count) = rms(A*c-y);
+%                 count = count +1;
+%             end
+%         end
+%     end
+% end
+
+% METHOD 2: randomized search
 % tic;
 % disp("Using randomized hyperparameter testing");
 % for j=1:1000
@@ -54,7 +91,8 @@ titles = ["fixed acidity";"volatile acidity";"citric acid";"residual sugar";  ..
 %     % compute RMS error 
 %     RMS_arr(j) = rms(A*c-y);
 % end
-% 
+
+% find the minimum value and output it.
 % [Min, Index] = min(RMS_arr)
 % fprintf("finished in %s seconds\n\n", toc);
 
@@ -77,7 +115,8 @@ ratings = A_untrained * c;
 
 % sort the rankings in descending order
 [sorted_ratings, indexs] = sort(ratings,'descend');
-sorted_ratings = [sorted_ratings indexs];
+% sorted_ratings = [sorted_ratings indexs];
+
 % ==================== PART 1 END ==================== %
 
 % ==================== PART 2 START ==================== %
