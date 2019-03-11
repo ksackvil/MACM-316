@@ -115,7 +115,7 @@ ratings = A_untrained * c;
 
 % sort the rankings in descending order
 [sorted_ratings, indexs] = sort(ratings,'descend');
-% sorted_ratings = [sorted_ratings indexs];
+sorted_ratings = [sorted_ratings indexs];
 
 % ==================== PART 1 END ==================== %
 
