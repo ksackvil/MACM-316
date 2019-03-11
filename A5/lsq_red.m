@@ -106,9 +106,11 @@ y = white_training(:,11);
 % solve for lsq coefficents using "\"
 c = A \ y; 
 
+RMS = rms(A*c-y);
+
 % ~~~~~ Solve for y = ratings vector ~~~~~ %
 % least-squares matrix A for the untrained data
-A_untrained = [ones(size(whitelist2(:,1))) whitelist2(:,2), whitelist2(:,4), whitelist2(:,8)];
+A_untrained = [ones(size(white_training(:,1))) white_training(:,2), white_training(:,4), white_training(:,8)];
 
 % get rankings based modal
 ratings = A_untrained * c;
