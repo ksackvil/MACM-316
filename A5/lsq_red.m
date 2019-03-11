@@ -13,162 +13,55 @@ titles = ["fixed acidity";"volatile acidity";"citric acid";"residual sugar";  ..
           "chlorides";"free sulfur dioxide";"total sulfur dioxide";"density"; ...
           "pH";"sulphates";"quality"];
 
-% ==================== PART 1 START ==================== %
-% ~~~~~ TRAINING MODAL ON WHITES.CSV DATA ~~~~~ %
-% Both methods used find the 'correct' parameter to be 2, 4, and 8
-% First method tests all possible cases exculding any duplicates, second
-% method test random versions of the three ji's. both find the combination 
-% with the least RMS.
 
-% RMS_arr = [];
-% count = 1;
-
-% METHOD 1 using grid search (ie all possible values)
-% tic
-% for j1=1:10
-%     
-%     for j2 = 1:10
-%         
-%         if(j2 == j1)
-%             continue
-%         end
-%         
-%         for j3 = 1:10
-%             
-%             if(j3 == j1 || j3 == j2)
-%                 continue
-%             else
-%                 A = [ones(size(white_training(:,1))) white_training(:,j1), white_training(:,j2), white_training(:,j3)];
-%                 % known quality ratings
-%                 y = white_training(:,11); 
-% 
-%                 % solve for lsq coefficents using "\"       
-%                 c = A \ y; 
-% 
-%                 disp([count, j1, j2, j3])
-%                 % compute RMS error 
-%                 RMS_arr(count) = rms(A*c-y);
-%                 count = count +1;
-%             end
-%         end
-%     end
-% end
-
-% METHOD 2: randomized search
-% tic;
-% disp("Using randomized hyperparameter testing");
-% for j=1:1000
-%     % choose the three col randomly make sure no duplicate j's
-%     j1 = randi([1,10],1);
-%     
-%     rng shuffle;
-%     j2 = randi([1,10],1);
-%     
-%     while(j2 == j1)
-%         rng shuffle;
-%         j2 = randi([1,10],1);    
-%     end
-%     
-%     rng shuffle;
-%     j3 = randi([1,10],1);
-%     
-%     while(j3 == j1 || j3 == j2)
-%         rng shuffle;
-%         j3 = randi([1,10],1);    
-%     end
-% 
-%     disp([j, j1, j2, j3])
-%     
-%     % least-squares matrix A with only three factors 
-%     A = [ones(size(white_training(:,1))) white_training(:,j1), white_training(:,j2), white_training(:,j3)];
-% 
-%     % known quality ratings
-%     y = white_training(:,11); 
-% 
-%     % solve for lsq coefficents using "\"
-%     c = A \ y; 
-% 
-%     % compute RMS error 
-%     RMS_arr(j) = rms(A*c-y);
-% end
-
-% find the minimum value and output it.
-% [Min, Index] = min(RMS_arr)
-% fprintf("finished in %s seconds\n\n", toc);
-
-% ~~~~~ Solving For Coefficient vector c ~~~~~ %
-% least-squares matrix A with only three factors j = {2, 4, 8}
-A = [ones(size(white_training(:,1))) white_training(:,2), white_training(:,4), white_training(:,8)];
+% ==================== PART 2 START ==================== %
+% least-squares matrix A
+cols = [1:10];
+A = [ones(size(red(:,1))) red(:,cols)];
 
 % known quality ratings
-y = white_training(:,11); 
+y = red(:,11); 
      
 % solve for lsq coefficents using "\"
 c = A \ y; 
 
+% compute RMS error 
 RMS = rms(A*c-y);
 
-% ~~~~~ Solve for y = ratings vector ~~~~~ %
-% least-squares matrix A for the untrained data
-A_untrained = [ones(size(white_training(:,1))) white_training(:,2), white_training(:,4), white_training(:,8)];
+% ========== 1. DIRECT NORMAL EQUATIONS ========== %
+disp("Part 1.")
 
-% get rankings based modal
-ratings = A_untrained * c;
+% insert the normal equations solve here: 
+AT = transpose(A);
+% c_test1 = (transpose(A)*A) \ (transpose(A)*y);
+c_test1 = inv(AT*A)*AT*y;
 
-% sort the rankings in descending order
-[sorted_ratings, indexs] = sort(ratings,'descend');
-sorted_ratings = [sorted_ratings indexs];
+diff_1 = abs(c-c_test1)
+RMS_1 = rms(A*c_test1-y)
 
-% ==================== PART 1 END ==================== %
+% ========== 2. QR FUNCTION CALL ========== %
+disp("Part 2.")
 
-% ==================== PART 2 START ==================== %
-% % least-squares matrix A
-% cols = [1:3];
-% A = [ones(size(red(:,1))) red(:,cols)];
-% 
-% % known quality ratings
-% y = red(:,11); 
-%      
-% % solve for lsq coefficents using "\"
-% c = A \ y; 
-% 
-% % compute RMS error 
-% RMS = rms(A*c-y);
-% 
-% % ========== 1. DIRECT NORMAL EQUATIONS ========== %
-% disp("Part 1.")
-% 
-% % insert the normal equations solve here: 
-% AT = transpose(A);
-% % c_test1 = (transpose(A)*A) \ (transpose(A)*y);
-% c_test1 = inv(AT*A)*AT*y;
-% 
-% diff_1 = abs(c-c_test1)
-% RMS_1 = rms(A*c_test1-y)
-% 
-% % ========== 2. QR FUNCTION CALL ========== %
-% disp("Part 2.")
-% 
-% % insert the QR solve here: 
-% [Q2, R2] = qr(A,0);
-% % c_test2 = R2 \ (transpose(Q2)*y);
-% c_test2 = inv(R2)*transpose(Q2)*y;
-% 
-% diff_2 = abs(c-c_test2)
-% RMS_2 = rms(A*c_test2-y)
-% 
-% % ========== 2. QR PERMUTED FUNCTION CALL ========== %
-% disp("Part 3.")
-% 
-% % insert the permuted QR solve here:
-% % uncomment this line to generate permutation matrix P
-% [Q3, R3, E] = qr(A,0);
-% I = eye(11,11); P = I(:,E);
-% % c_test3 = (R3*transpose(P)) \ (transpose(Q3)*y);
-% c_test3 = P*inv(R3)*transpose(Q3)*y;
-% 
-% diff_3 = abs(c-c_test3)
-% RMS_3 = rms(A*c_test3-y)
+% insert the QR solve here: 
+[Q2, R2] = qr(A,0);
+% c_test2 = R2 \ (transpose(Q2)*y);
+c_test2 = inv(R2)*transpose(Q2)*y;
+
+diff_2 = abs(c-c_test2)
+RMS_2 = rms(A*c_test2-y)
+
+% ========== 2. QR PERMUTED FUNCTION CALL ========== %
+disp("Part 3.")
+
+% insert the permuted QR solve here:
+% uncomment this line to generate permutation matrix P
+[Q3, R3, E] = qr(A,0);
+I = eye(11,11); P = I(:,E);
+% c_test3 = (R3*transpose(P)) \ (transpose(Q3)*y);
+c_test3 = P*inv(R3)*transpose(Q3)*y;
+
+diff_3 = abs(c-c_test3)
+RMS_3 = rms(A*c_test3-y)
 % 
 % ==================== PART 2 END ==================== %
 
